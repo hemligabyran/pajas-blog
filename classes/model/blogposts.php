@@ -9,6 +9,7 @@ class Model_Blogposts extends Model
 	protected $older_than;
 	protected $order_by    = array('published' => 'DESC');
 	protected $paths;
+	protected $tags;
 
 	public function __construct()
 	{
@@ -77,6 +78,20 @@ class Model_Blogposts extends Model
 
 		if ($this->ids !== NULL)
 			$sql .= ' AND p.id IN ('.implode(',', $this->ids).')';
+
+		if ($this->tags !== NULL)
+		{
+			foreach ($this->tags as $tag_name => $tag_values)
+			{
+				if (is_array($tag_values))
+				{
+					foreach ($tag_values as $tag_value)
+						$sql .= ' AND p.id IN (SELECT post_id FROM blog_posts_tags WHERE name = '.$this->pdo->quote($tag_name).' AND value = '.$this->pdo->quote($tag_value).')';
+				}
+				elseif ($tag_values === TRUE)
+					$sql .= ' AND p.id IN (SELECT post_id FROM blog_posts_tags WHERE name = '.$this->pdo->quote($tag_name).')';
+			}
+		}
 
 		if ($this->order_by)
 		{
@@ -190,6 +205,14 @@ class Model_Blogposts extends Model
 		elseif (empty($array))       $array = FALSE;
 
 		$this->paths = $array;
+
+		return $this;
+	}
+
+	public function tags($tags)
+	{
+		if (is_array($array)) $this->tags = $array;
+		else                  $this->tags = NULL;
 
 		return $this;
 	}
