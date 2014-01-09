@@ -209,7 +209,7 @@ class Model_Blogposts extends Model
 		return $this;
 	}
 
-	public function tags($tags)
+	public function tags($array)
 	{
 		if (is_array($array)) $this->tags = $array;
 		else                  $this->tags = NULL;
