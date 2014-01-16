@@ -33,20 +33,35 @@ class Controller_Admin_Blog extends Admincontroller
 		// Save a Blogpost
 		if ( ! empty($_POST))
 		{
-			$post = new Validation($_POST);
+			$post      = new Validation($_POST);
 			$form_data = $post->as_array();
 			$post->rule('Valid::not_empty', 'title');
 			$post->rule('Valid::not_empty', 'content');
-
-			/*
-			if (isset($form_data['on_first_page'])) $form_data['on_first_page'] = 1;
-			else                                    $form_data['on_first_page'] = 0;
-			*/
 
 			if ($post->validate())
 			{
 				$new_data = $post->as_array();
 				if (isset($_GET['id'])) $new_data['id'] = $_GET['id'];
+
+				$new_data['tags'] = array();
+				foreach ($new_data as $key => $value)
+				{
+					if (substr($key, 0, 8) == 'tag_name')
+					{
+						$position = substr($key, 8);
+						if ($value != '')
+						{
+							if ( ! isset($new_data['tags'][$value]))
+								$new_data['tags'][$value] = array();
+
+							$new_data['tags'][$value][] = $new_data['tag_value'.$position];
+						}
+
+						unset($new_data[$key]);
+						unset($new_data['tag_value'.$position]);
+					}
+				}
+
 				$blogpost->set($new_data);
 				$blogpost->save();
 
@@ -70,7 +85,7 @@ class Controller_Admin_Blog extends Admincontroller
 			}
 		}
 
-		xml::to_XML($blogpost->get(), array('blogpost' => $this->xml_content), NULL, 'id');
+		xml::to_XML($this->format_blogpost($blogpost->get()), array('blogpost' => $this->xml_content), NULL, 'id');
 
 		$this->set_formdata($form_data);
 	}

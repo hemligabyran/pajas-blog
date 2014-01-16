@@ -134,13 +134,36 @@
 					<xsl:with-param name="rows"  select="'15'" />
 				</xsl:call-template>
 
-				<!-- On first page - ->
-				<xsl:call-template name="form_line">
-					<xsl:with-param name="id"    select="'on_first_page'" />
-					<xsl:with-param name="label" select="'Show on first page'" />
-					<xsl:with-param name="type"  select="'checkbox'" />
-					<xsl:with-param name="value" select="blog/on_first_page" />
-				</xsl:call-template-->
+				<fieldset>
+					<legend>Tags</legend>
+
+					<!-- Tags -->
+					<xsl:for-each select="blogpost/tags/tag">
+						<h2>Tag</h2>
+						<xsl:call-template name="form_line">
+							<xsl:with-param name="id"    select="concat('tag_name_', position())" />
+							<xsl:with-param name="label" select="'Name:'" />
+							<xsl:with-param name="value" select="@name" />
+						</xsl:call-template>
+
+						<xsl:call-template name="form_line">
+							<xsl:with-param name="id"    select="concat('tag_value_', position())" />
+							<xsl:with-param name="label" select="'Value:'" />
+							<xsl:with-param name="value" select="." />
+						</xsl:call-template>
+					</xsl:for-each>
+
+					<h2>New tag</h2>
+					<xsl:call-template name="form_line">
+						<xsl:with-param name="id"    select="'tag_name'" />
+						<xsl:with-param name="label" select="'Name:'" />
+					</xsl:call-template>
+
+					<xsl:call-template name="form_line">
+						<xsl:with-param name="id"    select="'tag_value'" />
+						<xsl:with-param name="label" select="'Value:'" />
+					</xsl:call-template>
+				</fieldset>
 
 				<!-- Save / Add -->
 				<button type="submit" class="longman positive">Save ›</button>
