@@ -83,13 +83,15 @@ class Model_Blogposts extends Model
 		{
 			foreach ($this->tags as $tag_name => $tag_values)
 			{
-				if (is_array($tag_values))
+				if ($tag_values === TRUE)
+					$sql .= ' AND p.id IN (SELECT post_id FROM blog_posts_tags WHERE name = '.$this->pdo->quote($tag_name).')';
+				elseif (is_array($tag_values))
 				{
 					foreach ($tag_values as $tag_value)
 						$sql .= ' AND p.id IN (SELECT post_id FROM blog_posts_tags WHERE name = '.$this->pdo->quote($tag_name).' AND value = '.$this->pdo->quote($tag_value).')';
 				}
-				elseif ($tag_values === TRUE)
-					$sql .= ' AND p.id IN (SELECT post_id FROM blog_posts_tags WHERE name = '.$this->pdo->quote($tag_name).')';
+				else
+					$sql .= ' AND p.id IN (SELECT post_id FROM blog_posts_tags WHERE name = '.$this->pdo->quote($tag_name).' AND value = '.$this->pdo->quote($tag_values).')';
 			}
 		}
 

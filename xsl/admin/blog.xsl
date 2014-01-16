@@ -3,7 +3,11 @@
 
 	<xsl:include href="tpl.default.xsl" />
 
-	<myns:js><file>/js/admin.js</file></myns:js>
+	<myns:js>
+		<file>/js/admin/admin.js</file>
+		<file>//tinymce.cachefly.net/4.0/tinymce.min.js</file>
+	</myns:js>
+
 	<myns:css><file>/css/admin.css</file></myns:css>
 
 	<xsl:template name="tabs">
@@ -82,6 +86,17 @@
 
 	<!-- Add or edit blogpost -->
 	<xsl:template match="content[../meta/action = 'blogpost']">
+		<script type="text/javascript">
+			$(document).ready(function(){
+				tinymce.init({
+					plugins: ["link image code"],
+					selector: 'textarea#content',
+					toolbar: "bold italic underline formath2 | link image | bullist numlist | subscript superscript | removeformat code",
+					menubar: false,
+				});
+			});
+		</script>
+
 		<form method="post">
 			<xsl:if test="../meta/url_params/id">
 				<xsl:attribute name="action">
@@ -103,6 +118,12 @@
 				<xsl:call-template name="form_line">
 					<xsl:with-param name="id"    select="'title'" />
 					<xsl:with-param name="label" select="'Title:'" />
+				</xsl:call-template>
+
+				<!-- URI -->
+				<xsl:call-template name="form_line">
+					<xsl:with-param name="id"    select="'uri'" />
+					<xsl:with-param name="label" select="'URI:'" />
 				</xsl:call-template>
 
 				<!-- Content -->
