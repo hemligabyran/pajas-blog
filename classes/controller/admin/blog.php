@@ -112,17 +112,20 @@ class Controller_Admin_Blog extends Admincontroller
 	protected function format_blogpost($blogpost)
 	{
 		$counter = 1;
-		foreach ($blogpost['tags'] as $name => $values)
+		if (isset($blogpost['tags']))
 		{
-			foreach ($values as $value)
+			foreach ($blogpost['tags'] as $name => $values)
 			{
-				$counter++;
-				$blogpost['tags'][$counter.'tag'] = array(
-					'@name'  => $name,
-					'$value' => $value,
-				);
+				foreach ($values as $value)
+				{
+					$counter++;
+					$blogpost['tags'][$counter.'tag'] = array(
+						'@name'  => $name,
+						'$value' => $value,
+					);
+				}
+				unset($blogpost['tags'][$name]);
 			}
-			unset($blogpost['tags'][$name]);
 		}
 
 		return $blogpost;

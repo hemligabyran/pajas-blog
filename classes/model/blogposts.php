@@ -145,6 +145,19 @@ class Model_Blogposts extends Model
 			}
 		}
 
+		if ($this->older_than)
+		{
+			$published_blogposts = array();
+
+			foreach ($blogposts as $post_id => $blogpost)
+				if (isset($blogpost['tags']['published']))
+					foreach ($blogpost['tags']['published'] as $published)
+						if (strtotime($published) <= $this->older_than)
+							$published_blogposts[$post_id] = $blogpost;
+
+			$blogposts = $published_blogposts;
+		}
+
 		return $blogposts;
 	}
 
@@ -185,7 +198,7 @@ class Model_Blogposts extends Model
 		if ($numval === NULL) $this->older_than = NULL;
 		else
 		{
-			$numval = preg_replace('/[^0-9]+/', '', $numval);
+			$numval           = preg_replace('/[^0-9]+/', '', $numval);
 			$this->older_than = floatval($numval); // int can be capped, use float instead!
 		}
 

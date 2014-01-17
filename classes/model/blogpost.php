@@ -25,7 +25,7 @@ class Model_Blogpost extends Model
 
 	public function load_from_db($id)
 	{
-		foreach (Blogposts::factory()->ids($id)->get() as $blogpost)
+		foreach (Blogposts::factory()->older_than(NULL)->ids($id)->get() as $blogpost)
 			$this->data = $blogpost;
 
 		return $this;
