@@ -7,7 +7,7 @@ class Model_Blogposts extends Model
 	protected $limit       = 10;
 	protected $offset;
 	protected $older_than;
-	protected $order_by    = array('published' => 'DESC');
+	protected $order_by    = array('published' => 'ASC');
 	protected $paths;
 	protected $tags;
 
