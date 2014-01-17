@@ -41,7 +41,7 @@ class Model_Blogposts extends Model
 			$this->pdo->exec('CREATE TABLE blog_posts (
 					id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 					title varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-					uri varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+					path varchar(255) COLLATE utf8_unicode_ci NOT NULL,
 					content text COLLATE utf8_unicode_ci NOT NULL,
 					published timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 					PRIMARY KEY (id)

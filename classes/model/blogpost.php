@@ -18,7 +18,7 @@ class Model_Blogpost extends Model
 	public static function factory_by_path($path)
 	{
 		foreach (Blogposts::factory()->paths($path)->get() as $blogpost)
-			return new self($blogpost->id);
+			return new self($blogpost['id']);
 
 		return FALSE;
 	}

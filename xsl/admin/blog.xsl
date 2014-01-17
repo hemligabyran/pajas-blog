@@ -120,10 +120,10 @@
 					<xsl:with-param name="label" select="'Title:'" />
 				</xsl:call-template>
 
-				<!-- URI -->
+				<!-- Path -->
 				<xsl:call-template name="form_line">
-					<xsl:with-param name="id"    select="'uri'" />
-					<xsl:with-param name="label" select="'URI:'" />
+					<xsl:with-param name="id"    select="'path'" />
+					<xsl:with-param name="label" select="'Path:'" />
 				</xsl:call-template>
 
 				<!-- Content -->
