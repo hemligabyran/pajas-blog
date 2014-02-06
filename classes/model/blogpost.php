@@ -46,8 +46,8 @@ class Model_Blogpost extends Model
 		foreach ($this->data as $key => $value)
 		{
 			$basic_sql = 'UPDATE blog_posts SET ';
-			if (in_array($key, array('title', 'uri', 'content', 'published')))
-				$basic_sql .= Mysql::quote_identifier($key).' = '.$this->pdo->quote($value);
+			if (in_array($key, array('title', 'path', 'content', 'published')))
+				$basic_sql .= Mysql::quote_identifier($key).' = '.$this->pdo->quote(Encoding::fixUTF8($value));
 			elseif ($key == 'tags')
 			{
 				$this->pdo->exec('DELETE FROM blog_posts_tags WHERE post_id = '.$this->data['id']);
